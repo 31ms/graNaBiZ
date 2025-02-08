@@ -3,8 +3,6 @@ document.body.appendChild(CanvasScreen.cnv)
 CanvasScreen.fillWindow()
 Renderer.clear()
 let dt = 0
-const times = []
-a = new PhysicsObject2D(Geometry.rect, 0, false)
 function frame(){
   dt = performance.now()
   CanvasScreen.fillWindow()
@@ -16,8 +14,9 @@ function frame(){
   //console.log(dt)
 }
 
-
+// Fps Counter
 let fpsCounter = document.getElementById("fpsCounter")
+const times = []
 function countFps(){
   const now = performance.now()
   while (times.length > 0 && times[0] <= now - 1000) {
@@ -26,4 +25,4 @@ function countFps(){
   times.push(now)
   fpsCounter.innerText = `Fps: ${times.length}`
 }
-setInterval(frame,17)
+setInterval(frame,4)
