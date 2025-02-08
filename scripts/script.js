@@ -7,6 +7,7 @@ for(let i = 0; i<30; i++){
   let j = new PhysicsObject2D(Geometry.rect,0)
   j.size = new Vector2(100,100)
   j.position = new Vector2(0,0)
+  j.color = new Vector3(Math.random(),0,Math.random()) // tu masz przedstawione jak mozna zrobic
   objects.push(j)
 }
 let dt = 0
