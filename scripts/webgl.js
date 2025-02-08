@@ -280,7 +280,6 @@ class Texture{
         this.setWrap(Texture.enums.wrap.CLAMP_TO_EDGE)
         Renderer.gl.texParameteri(Renderer.gl.TEXTURE_2D, Renderer.gl.TEXTURE_MIN_FILTER, Renderer.gl.LINEAR)
         this.setFilter(Texture.enums.filter.NEAREST)
-        // this.setWrap(Texture.enums.wrap.CLAMP_TO_EDGE)
     }
     setWrap(value){
         Renderer.gl.texParameteri(Renderer.gl.TEXTURE_2D, Renderer.gl.TEXTURE_WRAP_S, value)
