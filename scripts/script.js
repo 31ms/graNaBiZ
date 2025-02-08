@@ -18,9 +18,11 @@ a.size = new Vector2(100,50)
 b.size = new Vector2(50,100)
 let dt = 0
 let c = 0
+var background = new Background()
 function frame(){
   dt = new Date().getMilliseconds()
   CanvasScreen.fillWindow()
+  background.align()
   Renderer.clear()
   Renderer.render(Object2D.scene)
   console.log(a.isColliding(b))
@@ -32,6 +34,9 @@ function frame(){
   console.log(dt)
 }
 setInterval(frame,2)
+ImageLoader.loadImage("KamilKonik.png").then((img) => {
+  background.setImage(img)
+})
 document.onkeydown = (e) => {
   switch(e.code){
     case "Space":
@@ -44,5 +49,4 @@ document.onkeydown = (e) => {
       player.velocity   .x = 10
     break
   }
-  
 }

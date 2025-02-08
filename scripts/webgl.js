@@ -272,7 +272,10 @@ class ImageLoader{
 }
 class Texture{
     offset = new Vector2(0,0)
-    scale = new Vector2(1,1)
+    scale = new Vector2(1,1) // skaluje teksture podczas renderowanie
+
+    size = new Vector2(1, 1) // rozmiar obrazu tekstury
+
     constructor(){
         var gl = Renderer.gl
         this.id = gl.createTexture()
@@ -289,14 +292,16 @@ class Texture{
         Renderer.gl.texParameteri(Renderer.gl.TEXTURE_2D, Renderer.gl.TEXTURE_MAG_FILTER, value)
     }
     uploadImage(img){
-        this.Bind
+        this.Bind()
+        this.size = new Vector2(img.width, img.height)
         Renderer.gl.texImage2D(Renderer.gl.TEXTURE_2D,
             0, Renderer.gl.RGBA, Renderer.gl.RGBA,
             Renderer.gl.UNSIGNED_BYTE,img)
         return this
     }
     uploadPixels(w, h, pixels){
-        this.Bind
+        this.Bind()
+        this.size = new Vector2(w, h)
         Renderer.gl.texImage2D(Renderer.gl.TEXTURE_2D,
             0, Renderer.gl.RGBA,w, h, 0, Renderer.gl.RGBA,
             Renderer.gl.UNSIGNED_BYTE, new Uint8Array(pixels))
@@ -310,6 +315,12 @@ class Texture{
         )
         Renderer.gl.bindTexture(Renderer.gl.TEXTURE_2D, this.id)
     }
+    uploadDefaultPixels(){
+        this.uploadPixels(2, 2,
+            [0, 0, 0, 255,  255, 0, 255, 255,
+            255, 0, 255, 255,  0, 0, 0, 255])  
+        return this
+    } 
     static init(){
         this.enums = {
             wrap : {
@@ -323,9 +334,7 @@ class Texture{
             }
         }
         this.defaultTexture = new Texture()
-        this.defaultTexture.uploadPixels(2, 2,
-            [0, 0, 0, 255,  255, 0, 255, 255,
-            255, 0, 255, 255,  0, 0, 0, 255])   
+        this.defaultTexture.uploadDefaultPixels()   
     }
 }
 class Background extends Object2D{
@@ -336,6 +345,13 @@ class Background extends Object2D{
         this.texture.Bind()
         this.texture.setWrap(Texture.enums.wrap.MIRRORED_REPEAT)
         this.size = new Vector2(1, CanvasScreen.asp)
+    }
+    setImage(img){
+        this.texture.uploadImage(img)
+    }
+    align(){
+        this.size = CanvasScreen.getScreenSize()
+        this.texture.scale.x = CanvasScreen.asp * (this.texture.size.y/this.texture.size.x) 
     }
 }
 function initAll(){
