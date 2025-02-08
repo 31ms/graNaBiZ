@@ -34,7 +34,7 @@ function frame(){
   console.log(dt)
 }
 setInterval(frame,2)
-ImageLoader.loadImage("KamilKonik.png").then((img) => {
+ImageLoader.loadImage("testbackground.png").then((img) => {
   background.setImage(img)
 })
 document.onkeydown = (e) => {
