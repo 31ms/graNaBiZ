@@ -3,3 +3,10 @@
     padding: 0;
     overflow: hidden;
 }
+#fpsCounter{
+    font-family: Calibri;
+    font-size: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
