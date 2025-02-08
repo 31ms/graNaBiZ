@@ -1,4 +1,4 @@
-initAll()
+initAll() // RANDOMOWY KOMENTARZ
 document.body.appendChild(CanvasScreen.cnv)
 CanvasScreen.fillWindow()
 Renderer.clear()
