@@ -1,6 +1,7 @@
 class PhysicsObject2D extends Object2D{
-  constructor(geometry){
+  constructor(geometry, group){
     super(geometry)
+    CollisionChecker.collisionGroups[group].push(this)
   }
   getAxis(){
     let RX = Matrix2.rotation(this.rotation).transformVector(new Vector2(1,0))
@@ -50,9 +51,11 @@ class CollisionChecker{
     static collisionGroups = [[],[],[],[]]
     static checkCollisions(group, onObject){
         let collidesWith = []
-        for(let i = 1; i<this.collisionGroupsp[group].length; i++){
-            if(onObject.isColliding(this.collisionGroupsp[group][i])){
-                collidesWith.push(this.collisionGroupsp[group][i])
+        for(let i = 0; i<this.collisionGroups[group].length; i++){
+            if(onObject.isColliding(this.collisionGroups[group][i])){
+                if(onObject !=this.collisionGroups[group][i]){
+                    collidesWith.push(this.collisionGroups[group][i])
+                }
             }
         }
         return collidesWith

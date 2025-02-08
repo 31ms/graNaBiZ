@@ -12,26 +12,32 @@ class Player extends Object2D{
     this.velocity.y = 20
   }
 }
-let a = new PhysicsObject2D(Geometry.rect)
-let b = new PhysicsObject2D(Geometry.rect)
+let objects = []
+for(let i = 0; i<10; i++){
+  let j = new PhysicsObject2D(Geometry.rect,0)
+  j.size = new Vector2(100,100)
+  j.position = new Vector2(250*Math.random() - 125,250*Math.random() - 125)
+  objects.push()
+}
+let a = new PhysicsObject2D(Geometry.rect,0)
 a.size = new Vector2(100,50)
-b.size = new Vector2(50,100)
+a.zindex = -1
+ImageLoader.loadImage("../KamilKonik.png").then((img) => {
+  a.texture = new Texture().uploadImage(img)
+})
 let dt = 0
 let c = 0
 function frame(){
   dt = new Date().getMilliseconds()
   CanvasScreen.fillWindow()
+  console.log(CollisionChecker.checkCollisions(0,a))
+  c+=0.02
+  a.position.y = 250*Math.sin(c)
   Renderer.clear()
   Renderer.render(Object2D.scene)
-  console.log(a.isColliding(b))
-  a.rotation+=Math.PI/180
-  c+=0.04
-  a.position.y = 200*Math.sin(c)
-  b.position.y = 200*Math.sin(c/2)
   dt = Math.abs(dt - new Date().getMilliseconds())
-  console.log(dt)
 }
-setInterval(frame,2)
+setInterval(frame,16)
 document.onkeydown = (e) => {
   switch(e.code){
     case "Space":
