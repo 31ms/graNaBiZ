@@ -33,7 +33,7 @@ function frame(){
   console.log(a.isColliding(b))
   a.rotation+=Math.PI/180
   c+=0.04
-  a.position.y = 200*Math.sin(7*c)
+  a.position.y = 200*Math.sin(c)
   b.position.y = 200*Math.sin(c/2)
   // player.velocity.addTo(player.acceleration.divide(16))
   // player.position.addTo(player.velocity)
