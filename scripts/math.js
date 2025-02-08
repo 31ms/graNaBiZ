@@ -116,6 +116,13 @@ class Vector2{
     toFloatArray(){
         return new Float32Array(this.toArray())
     }
+    project(line){
+        let dotValue = line.x * (this.x - line.origin.x) + line.y * (this.y - line.origin.y)
+        return new Vector2(
+          line.origin.x + line.x * dotValue,
+          line.origin.y + line.y * dotValue
+        )
+    }
 }
 class Line extends Vector2{
     origin = new Vector2(0,0)
