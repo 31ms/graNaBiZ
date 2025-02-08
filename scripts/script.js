@@ -1,4 +1,4 @@
-initAll() // RANDOMOWY KOMENTARZ
+initAll()
 document.body.appendChild(CanvasScreen.cnv)
 CanvasScreen.fillWindow()
 Renderer.clear()
@@ -22,22 +22,27 @@ for(let i = 0; i<10; i++){
 let a = new PhysicsObject2D(Geometry.rect,0)
 a.size = new Vector2(100,50)
 a.zindex = -1
-ImageLoader.loadImage("../KamilKonik.png").then((img) => {
+ImageLoader.loadImage("../testbackground.png").then((img) => {
   a.texture = new Texture().uploadImage(img)
 })
 let dt = 0
 let c = 0
+var background = new Background()
 function frame(){
   dt = new Date().getMilliseconds()
   CanvasScreen.fillWindow()
   console.log(CollisionChecker.checkCollisions(0,a))
   c+=0.02
   a.position.y = 250*Math.sin(c)
+  background.align()
   Renderer.clear()
   Renderer.render(Object2D.scene)
   dt = Math.abs(dt - new Date().getMilliseconds())
 }
 setInterval(frame,16)
+ImageLoader.loadImage("../testbackground.png").then((img) => {
+  background.setImage(img)
+})
 document.onkeydown = (e) => {
   switch(e.code){
     case "Space":
@@ -50,5 +55,4 @@ document.onkeydown = (e) => {
       player.velocity   .x = 10
     break
   }
-  
 }
