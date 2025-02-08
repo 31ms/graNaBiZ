@@ -5,12 +5,12 @@ const CanvasScreen = {
         this.cnv.height = window.innerHeight
         Renderer.gl.viewport(0, 0, w, h)
         this.asp = w/h
-        // Renderer.program.setMatrix3("ortho", Matrix3.ortho(-this.asp*100,this.asp*100,-100,100))
+        // Renderer.program.setMatrix3("ortho", Matrix3.ortho(-this.asp,this.asp,-1,1))
         Renderer.program.setMatrix3("ortho", Matrix3.ortho(-w/2,w/2,-h/2,h/2))
     },
     getScreenSize(){
         // return new Vector2(this.asp*2, 2)
-        return new Vector2(this.asp*2, 2)
+        return new Vector2(this.cnv.width, this.cnv.height)
     },
     fillWindow(){
         this.setScreenSize(window.innerWidth, window.innerHeight)
@@ -347,4 +347,3 @@ function initAll(){
     Geometry.init()
     Texture.init()
 }
-
