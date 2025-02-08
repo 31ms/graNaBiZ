@@ -121,6 +121,13 @@ class Vector2{
         return new Float32Array(this.toArray())
     }
 }
+class Line extends Vector2{
+    origin = new Vector2(0,0)
+    constructor(origin, direction){
+      super(direction.x,direction.y)
+      this.origin = origin
+    }
+  }
 class Vector3{
     x = 0
     y = 0
