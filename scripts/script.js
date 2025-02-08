@@ -21,8 +21,8 @@ let a = new PhysicsObject2D(Geometry.rect)
 let b = new PhysicsObject2D(Geometry.rect)
 a.size = new Vector2(100,50)
 b.size = new Vector2(50,100)
-a.render()
-b.render()
+// a.render()
+// b.render()
 let dt = 0
 let c = 0
 function frame(){
