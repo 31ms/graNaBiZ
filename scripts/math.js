@@ -99,17 +99,13 @@ class Vector2{
     static dot(a, b){
         return a.x * b.x + a.y * b.y
     }
-    project(line){
-        let dotValue = line.x * (this.x - line.origin.x) + line.y * (this.y - line.origin.y)
-        return new Vector2(
-          line.origin.x + line.x * dotValue,
-          line.origin.y + line.y * dotValue
-        )
-    }
     static lerp(t, a, b){
         return new Vector2(
             Interpolation.lerp(t, a.x, b.x),
             Interpolation.lerp(t, a.y, b.y))
+    }
+    static project(a, b){
+        return b.scale(Vector2.dot(a, b)).divide(b.x*b.x + b.y * b.y)
     }
     static fromArray(a){
         return new Vector2(a[0], a[1])
@@ -121,13 +117,6 @@ class Vector2{
         return new Float32Array(this.toArray())
     }
 }
-class Line extends Vector2{
-    origin = new Vector2(0,0)
-    constructor(origin, direction){
-      super(direction.x,direction.y)
-      this.origin = origin
-    }
-  }
 class Vector3{
     x = 0
     y = 0
