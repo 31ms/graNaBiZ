@@ -221,14 +221,20 @@ class Object2D{
     position = new Vector2(0, 0)
     rotation = 0
     color = new Vector3(1,1,1)
-    size = new Vector2(1, 1)
+    _size = new Vector2(1, 1)
     texture = null
     constructor(geometry){
         this.geometry = geometry
         Object2D.scene[geometry.name].push(this)
     }
+    set size (size){
+        this._size = size
+    }
+    get size(){
+        return this._size
+    }
     getModel(){
-        return Matrix3.rotation(this.rotation).multiply(new Matrix3()._m00(this.size.x)._m11(this.size.y))
+        return Matrix3.rotation(this.rotation).multiply(new Matrix3()._m00(this._size.x)._m11(this._size.y))
         ._m02(this.position.x)
         ._m12(this.position.y)
     }

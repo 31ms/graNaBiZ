@@ -1,7 +1,24 @@
 class PhysicsObject2D extends Object2D{
-  constructor(geometry, group){
+  isIrreversible = false
+  AABB = new Vector2(new Vector2(-0.5, -0.5), new Vector2(0.5, 0.5))
+  constructor(geometry, group, isIrreversible){
     super(geometry)
     CollisionChecker.collisionGroups[group].push(this)
+    this.isIrreversible = isIrreversible
+  }
+  set size(size){
+    if(size instanceof Vector2){
+      if(this.isIrreversible){
+        this.AABB = new Vector2(this.position.sub(size.divide(2)), this.position.add(size.divide(2)))
+      }
+      else{
+        this.AABB = new Vector2(new Vector2(this.position.x - size.length()/2, this.position.y - size.length()/2), new Vector2(this.position.x + size.length()/2, this.position.y + size.length()/2))
+      }
+      this._size = size
+    }
+    else{
+      throw new Error(`Invalid size type expected Vector2 got ${size.constructor.name}`)
+    }
   }
   getAxis(){
     let RX = Matrix2.rotation(this.rotation).transformVector(new Vector2(1,0))
@@ -27,37 +44,49 @@ class PhysicsObject2D extends Object2D{
     let sign = (CP.x * line.x) + (CP.y * line.y) > 0
     return CP.length() * (sign ? 1 : -1)
   }
-  isColliding(onRect){
-    let onRectCorners = onRect.getCorners()
-    let corners = this.getCorners()
-    let onThisAxis1 = []
-    let onThisAxis2 = []
-    let onOtherAxis1 = []
-    let onOtherAxis2 = []
-    for (let i = 0; i<onRectCorners.length; i++){
-      onThisAxis1.push(this.getSignedDistance(this.getAxis()[0], onRectCorners[i]))
-      onThisAxis2.push(this.getSignedDistance(this.getAxis()[1], onRectCorners[i]))
-      onOtherAxis1.push(this.getSignedDistance(onRect.getAxis()[0], corners[i]))
-      onOtherAxis2.push(this.getSignedDistance(onRect.getAxis()[1], corners[i]))
-    }
-    let isAxis1Colliding = ((Math.min(...onThisAxis1) < 0 && Math.max(...onThisAxis1) > 0) || Math.abs(Math.min(...onThisAxis1)) < this.size.x/2 || Math.abs(Math.max(...onThisAxis1)) < this.size.x/2)
-    let isAxis2Colliding = ((Math.min(...onThisAxis2) < 0 && Math.max(...onThisAxis2) > 0) || Math.abs(Math.min(...onThisAxis2)) < this.size.y/2 || Math.abs(Math.max(...onThisAxis2)) < this.size.y/2)
-    let isAxis3Colliding = ((Math.min(...onOtherAxis1) < 0 && Math.max(...onOtherAxis1) > 0) || Math.abs(Math.min(...onOtherAxis1)) < onRect.size.x/2 || Math.abs(Math.max(...onOtherAxis1)) < onRect.size.x/2)
-    let isAxis4Colliding = ((Math.min(...onOtherAxis2) < 0 && Math.max(...onOtherAxis2) > 0) || Math.abs(Math.min(...onOtherAxis2)) < onRect.size.y/2 || Math.abs(Math.max(...onOtherAxis2)) < onRect.size.y/2)
-    return (isAxis1Colliding && isAxis2Colliding && isAxis3Colliding && isAxis4Colliding)
-  }
 }
 class CollisionChecker{
     static collisionGroups = [[],[],[],[]]
-    static checkCollisions(group, onObject){
+    // Checking collisions between two specific instances of PhysicsObject2D
+    static isColliding(rect, onRect){
+      let onRectCorners = onRect.getCorners()
+      let corners = rect.getCorners()
+      let onThisAxis1 = []
+      let onThisAxis2 = []
+      let onOtherAxis1 = []
+      let onOtherAxis2 = []
+      // Getting the signed distance of each corner projected on the two rectangles axis
+      for (let i = 0; i<onRectCorners.length; i++){
+        onThisAxis1.push(rect.getSignedDistance(rect.getAxis()[0], onRectCorners[i]))
+        onThisAxis2.push(rect.getSignedDistance(rect.getAxis()[1], onRectCorners[i]))
+        onOtherAxis1.push(rect.getSignedDistance(onRect.getAxis()[0], corners[i]))
+        onOtherAxis2.push(rect.getSignedDistance(onRect.getAxis()[1], corners[i]))
+      }
+      // Checking if the projected images of the rectangles are intersecting with them
+      let isAxis1Colliding = ((Math.min(...onThisAxis1) < 0 && Math.max(...onThisAxis1) > 0) || Math.abs(Math.min(...onThisAxis1)) < rect.size.x/2 || Math.abs(Math.max(...onThisAxis1)) < rect.size.x/2)
+      let isAxis2Colliding = ((Math.min(...onThisAxis2) < 0 && Math.max(...onThisAxis2) > 0) || Math.abs(Math.min(...onThisAxis2)) < rect.size.y/2 || Math.abs(Math.max(...onThisAxis2)) < rect.size.y/2)
+      let isAxis3Colliding = ((Math.min(...onOtherAxis1) < 0 && Math.max(...onOtherAxis1) > 0) || Math.abs(Math.min(...onOtherAxis1)) < onRect.size.x/2 || Math.abs(Math.max(...onOtherAxis1)) < onRect.size.x/2)
+      let isAxis4Colliding = ((Math.min(...onOtherAxis2) < 0 && Math.max(...onOtherAxis2) > 0) || Math.abs(Math.min(...onOtherAxis2)) < onRect.size.y/2 || Math.abs(Math.max(...onOtherAxis2)) < onRect.size.y/2)
+      // true is only returned if projections on all axis are intersecting
+      return (isAxis1Colliding && isAxis2Colliding && isAxis3Colliding && isAxis4Colliding)
+    }
+    // Checking collisions between a specified object and all other objects in a specified collision group
+    static checkCollisions(group, onRect){
         let collidesWith = []
+        // The narrow phase of checking collisions
         for(let i = 0; i<this.collisionGroups[group].length; i++){
-            if(onObject.isColliding(this.collisionGroups[group][i])){
-                if(onObject !=this.collisionGroups[group][i]){
+            if(this.isColliding(onRect, this.collisionGroups[group][i])){
+                if(onRect !=this.collisionGroups[group][i]){
                     collidesWith.push(this.collisionGroups[group][i])
                 }
             }
         }
+        // Method returns an array with all colliding objects or an empty one if there are no collisions detected
         return collidesWith
+    }
+    // The broad phase of checking collisions, checks collisions between object's AABBs
+    // For irreversible objects this is a full collision test
+    static checkCollisionsBroad(){
+
     }
 }

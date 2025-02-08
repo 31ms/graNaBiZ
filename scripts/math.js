@@ -127,7 +127,7 @@ class Vector2{
 class Line extends Vector2{
     origin = new Vector2(0,0)
     constructor(origin, direction){
-      super(direction.x,direction.y)
+      super(direction.x, direction.y)
       this.origin = origin
     }
 }
