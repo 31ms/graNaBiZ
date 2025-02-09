@@ -51,28 +51,38 @@ public class Window {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     }
-    public Window(int w, int h, boolean fullscr, String name){
-        if (fullscr){
-            int[] size = getMonitorSize();
-            width = size[0];
-            height = size[1];
-            monitor = primaryMonitor;
-        } else {
-            width = w;
-            height = h;
-            monitor = 0;
-        }
-        id = glfwCreateWindow(width, height, name, monitor, NULL);
+    // public Window(int w, int h, boolean fullscr, String name){
+    //     if (fullscr){
+    //         int[] size = getMonitorSize();
+    //         width = size[0];
+    //         height = size[1];
+    //         monitor = primaryMonitor;
+    //     } else {
+    //         width = w;
+    //         height = h;
+    //         monitor = 0;
+    //     }
+    //     id = glfwCreateWindow(width, height, name, monitor, NULL);
+    //     mainWindow = this;
+    // }
+    public Window(String name){
+        initGLFW();
+        int[] size = getMonitorSize();
+        width = size[0];
+        height = size[1];
+        Hints();
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        id = glfwCreateWindow(width, height, name, NULL, NULL);
+        
+        // glfwSetWindowPos(id, 0, 0);
         mainWindow = this;
-    }
-    public Window(boolean fullscr, String name){
-        this(0, 0, true, name);
     }
     public Window(int w, int h, String name){
         initGLFW();
         width = w;
         height = h;
         monitor = 0;
+        Hints();
         id = glfwCreateWindow(width, height, name, monitor, NULL);
         mainWindow = this;
     }
