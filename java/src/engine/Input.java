@@ -2,7 +2,7 @@ package engine;
 
 import org.lwjgl.glfw.*;
 
-import engine.math.*;
+import math.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -45,20 +45,20 @@ public class Input {
     public static GLFWCursorPosCallback cursorCallback = new GLFWCursorPosCallback() {
         @Override
         public void invoke(long window, double xpos, double ypos){
-            Mouse.lastPosition = Mouse.position.copy();
-            Mouse.position.set((float)xpos, (float)ypos);
-            Mouse.movement = Mouse.position.subtract(Mouse.lastPosition);
-            if (Mouse.justEntered){
-                Mouse.movement.set(0, 0);
-                Mouse.justEntered = false;
-            }
+            // Mouse.lastPosition = Mouse.position.copy();  // ODKOMENTUJ JAK BEDZIE MATH
+            // Mouse.position.set((float)xpos, (float)ypos);
+            // Mouse.movement = Mouse.position.subtract(Mouse.lastPosition);
+            // if (Mouse.justEntered){
+            //     Mouse.movement.set(0, 0);
+            //     Mouse.justEntered = false;
+            // }
         }
     };
     
     public static GLFWCursorEnterCallback enterCallback = new GLFWCursorEnterCallback() {
         @Override
         public void invoke(long window, boolean enter){
-            Mouse.justEntered = true;
+            // Mouse.justEntered = true; // ODKOMENTUJ JAK BEDZIE MATH
         }
     };
     public static void setInputCallbacks(Window window){
@@ -72,7 +72,7 @@ public class Input {
         Arrays.fill(Keyboard.up, false);
         Arrays.fill(Mouse.down, false);
         Arrays.fill(Mouse.up, false);
-        Mouse.movement.set(0, 0);
+        // Mouse.movement.set(0, 0); // ODKOMENTUJ JAK BEDZIE MATH
         glfwPollEvents();
     }
     public static void freeCallbacks(){
@@ -92,16 +92,16 @@ public class Input {
     //     return Keyboard.hold[key];
     // }
     public static class Mouse {
-        private static Vector2f position = new Vector2f();
-        private static Vector2f lastPosition = new Vector2f();
-        private static Vector2f movement = new Vector2f();
-        private static boolean justEntered = false;
-        public static Vector2f getPosition(){
-            return position.copy();
-        }
-        public static Vector2f getMovement(){
-            return movement.copy();
-        }
+        // private static Vector2f position = new Vector2f();
+        // private static Vector2f lastPosition = new Vector2f(); // ODKOMENTUJ JAK BEDZIE MATH
+        // private static Vector2f movement = new Vector2f();
+        // private static boolean justEntered = false;
+        // public static Vector2f getPosition(){
+        //     return position.copy();
+        // }
+        // public static Vector2f getMovement(){
+        //     return movement.copy();
+        // }
         private static boolean[] hold = new boolean[8];
         private static boolean[] down = new boolean[8];
         private static boolean[] up = new boolean[8];
