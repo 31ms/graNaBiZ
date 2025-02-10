@@ -1,0 +1,78 @@
+package math;
+
+public class Matrix3{
+    double m00 = 1; double m01 = 0; double m02 = 0;
+    double m10 = 0; double m11 = 1; double m12 = 0;
+    double m20 = 0; double m21 = 0; double m22 = 1;
+    Matrix3 _m00(double m00){this.m00 = m00;return this;}
+    Matrix3 _m10(double m10){this.m10 = m10;return this;}
+    Matrix3 _m20(double m20){this.m20 = m20;return this;}
+    Matrix3 _m01(double m01){this.m01 = m01;return this;}
+    Matrix3 _m11(double m11){this.m11 = m11;return this;}
+    Matrix3 _m21(double m21){this.m21 = m21;return this;}
+    Matrix3 _m02(double m02){this.m02 = m02;return this;}
+    Matrix3 _m12(double m12){this.m12 = m12;return this;}
+    Matrix3 _m22(double m22){this.m22 = m22;return this;}
+    Vector3[] baseVectors(){
+        return new Vector3[]{
+            new Vector3(this.m00, this.m10, this.m20),
+            new Vector3(this.m01, this.m11, this.m21),
+            new Vector3(this.m02, this.m12, this.m22)
+        };
+    }
+    Vector3 transformVector(Vector3 vector) {
+        var x = this.m00 * vector.x + this.m01 * vector.y + this.m02 * vector.z;
+        var y = this.m10 * vector.x + this.m11 * vector.y + this.m12 * vector.z;
+        var z = this.m20 * vector.x + this.m21 * vector.y + this.m22 * vector.z;
+        return new Vector3(x, y, z);
+    }
+    Vector2 transformVector2(Vector2 vector, double z){
+        Vector3 vec3 = this.transformVector(new Vector3(vector.x, vector.y, z));
+        return new Vector2(vec3.x, vec3.y);
+    }
+    Matrix3 multiply(Matrix3 matrix){
+        var m = new Matrix3();
+        m.m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
+        m.m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20;
+        m.m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20;
+
+        m.m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
+        m.m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21;
+        m.m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
+
+        m.m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22;
+        m.m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22;
+        m.m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
+        return m;
+    }
+    Matrix3 setTranslation(Vector2 vec2){
+        this.m02 = vec2.x;
+        this.m12 = vec2.y;
+        return this;
+    }
+    static Matrix3 rotation(double angle){
+        var m = new Matrix3();
+        var c = Math.cos(angle);
+        var s = Math.sin(angle);
+        m.m00 = c;
+        m.m11 = c;
+        m.m01 = -s;
+        m.m10 = s;
+        return m;
+    }
+    static Matrix3 ortho(double left, double right, double bottom, double top){
+        double xt = (left+right)/(left - right);
+        double xs = 2/(right - left);
+
+        double yt = (bottom+top)/(bottom - top);
+        double ys = 2/(top - bottom);
+        Matrix3 m = new Matrix3();
+        return m._m00(xs)._m02(xt)._m11(ys)._m12(yt);
+    }
+    double[] toArray(){
+        return new double[]{this.m00, this.m10, this.m20, this.m01, this.m11, this.m21, this.m02, this.m12, this.m22};
+    }
+    // toFloatArray(){
+    //     return new Float32Array(this.toArray())
+    // }
+}

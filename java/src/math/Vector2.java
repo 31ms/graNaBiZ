@@ -64,13 +64,13 @@ public class Vector2{
     static Vector2 project(Vector2 a, Vector2 b){
         return b.divide(b.length()).scale(Vector2.dot(a, b));
     }
-    // Vector2 project(Line2 line){
-    //     double dotValue = line.x * (this.x - line.origin.x) + line.y * (this.y - line.origin.y);
-    //     return new Vector2(
-    //       line.origin.x + line.x * dotValue,
-    //       line.origin.y + line.y * dotValue
-    //     );
-    // }
+    Vector2 project(Line2 line){
+        double dotValue = line.x * (this.x - line.origin.x) + line.y * (this.y - line.origin.y);
+        return new Vector2(
+          line.origin.x + line.x * dotValue,
+          line.origin.y + line.y * dotValue
+        );
+    }
     static Vector2 fromArray(double[] a){
         return new Vector2(a[0], a[1]);
     }
