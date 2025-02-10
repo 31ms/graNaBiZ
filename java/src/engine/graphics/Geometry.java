@@ -3,17 +3,45 @@ package engine.graphics;
 import engine.graphics.buffers.VertexArrayObject;
 import engine.graphics.buffers.VertexBufferObject;
 
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL32.*;
 public class Geometry {
     VertexArrayObject vao;
     VertexBufferObject vbo, ebo;
     Geometry(float[] vertices, int[] triangles){
-        // this.vao = new VertexArrayObject(); ZROB PROGRAM
+        vao = new VertexArrayObject();
+        vao.Bind();
 
-        // this.vbo = VertexBufferObject.vbo()
+        vbo = VertexBufferObject.vbo();
+        vbo.Bind();
+        vbo.uploadData(vertices, GL_STATIC_DRAW);
+        ebo = VertexBufferObject.ebo();
+        ebo.Bind();
+        ebo.uploadData(triangles, GL_STATIC_DRAW);
+        ShaderProgram.defineAttribs();
+        vao.unBind();
     }
-    Geometry rect;
-    Geometry tri;
+    public void Bind(){
+        vao.Bind();
+    }
+    public static Geometry rect;
+    public static Geometry tri;
     static void init(){
-
+        rect = new Geometry(new float[]{
+            -.5f, -.5f, 0, 1,
+            -.5f, .5f, 0, 0,
+            .5f, .5f, 1, 0,
+            .5f, -.5f, 1, 1
+        }, new int[]{
+            0, 1 ,2, 2, 3, 0
+        });
+        tri = new Geometry(
+            new float[]{
+                0, .5f, 0.5f, 0,
+                -.5f, -.5f, 0, 1,
+                .5f, -.5f, 1, 1
+            },
+            new int[]{0,1,2}
+        );
     }
 }

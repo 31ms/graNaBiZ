@@ -29,10 +29,10 @@ public class VertexBufferObject {
         glBufferData(target, data, usage);
     }
     public void uploadData(float[] data, int usage){
-        uploadData(BufferUtils.createFloatBuffer(data.length).put(data), usage);;
+        uploadData(BufferUtils.createFloatBuffer(data.length).put(data).flip(), usage);;
     }
     public void uploadData(int[] data, int usage){
-        uploadData(BufferUtils.createIntBuffer(data.length).put(data), usage);
+        uploadData(BufferUtils.createIntBuffer(data.length).put(data).flip(), usage);
     }
     public void Destroy(){
         glDeleteBuffers(id);
