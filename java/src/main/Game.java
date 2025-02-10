@@ -1,33 +1,30 @@
 package main;
 
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL.createCapabilities;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-
+import engine.FileReader;
+import engine.Image;
+import engine.Input;
 import engine.Timer;
 
 import engine.Window;
+import engine.graphics.Renderer;
 
 public class Game {
+    static Game game;
     Window window;
     public Game(){
         window = new Window(600, 400, "okno");
-        window.Bind();
-        createCapabilities();
-        glClearColor(0, .2f, .1f, 1);
-        while (!glfwWindowShouldClose(window.id)){
-            glfwPollEvents();
-            // System.out.println("TICK");
-            glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(window.id);
+        Renderer.init(window);
+        window.setCallbacks();
+        while (!window.shouldClose()){
+            Input.updateInput();
+            
+            Renderer.clear();
+
+            window.swap();
             Timer.sleep(100);
         };
     }
     public static void main(String[] args){
-        new Game();
+       game = new Game();
     }
 }
