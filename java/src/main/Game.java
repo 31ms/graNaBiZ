@@ -1,30 +1,30 @@
 package main;
 
-import engine.FileReader;
-import engine.Image;
-import engine.Input;
-import engine.Object2D;
-import engine.Timer;
-
-import engine.Window;
-import engine.graphics.Geometry;
-import engine.graphics.Renderer;
-import math.Vector2;
-
+import engine.*;
+import math.*;
+import engine.physics.*;
+import engine.graphics.*;
 public class Game {
     static Game game;
     Window window;
     public Game(){
-        window = new Window(600, 400, "okno");
+        window = new Window(1000, 1000, "okno");
         Renderer.init(window);
         window.setCallbacks();
         Geometry.rect.Bind();
+        PhysicsObject2D a = new PhysicsObject2D(Geometry.rect, 0, false);
+        PhysicsObject2D b = new PhysicsObject2D(Geometry.rect, 0, false);
+        a.size = new Vector2(100, 200);
+        a.color = new Vector3(1, 1, 0);
+        b.size = new Vector2(150, 150);
+        double c = 0;
         // System.out.println(Object2D.scene);
-        Object2D a = new Object2D(Geometry.rect);
-        a.size = new Vector2(200, 200);
         while (!window.shouldClose()){
             Input.updateInput();
-            a.rotation += .05;
+
+            a.position = new Vector2(0, 300*Math.sin(c/2));
+            System.out.println(CollisionChecker.checkCollisions(0, a).size());
+            c+=0.4;
             Renderer.clear();
             Renderer.render(Object2D.scene);
             window.swap();

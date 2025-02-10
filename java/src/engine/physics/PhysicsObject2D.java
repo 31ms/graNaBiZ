@@ -3,12 +3,12 @@ import engine.*;
 import engine.graphics.*;
 import math.*;
 public class PhysicsObject2D extends Object2D{
-    PhysicsObject2D(Geometry geometry, int group, boolean isIrreversible){
+    public PhysicsObject2D(Geometry geometry, int group, boolean isIrreversible){
         super(geometry);
-        //CollisionChecker.collisionGroups[group].push(this);
+        CollisionChecker.collisionGroups.get(group).add(this);
         this.isIrreversible = isIrreversible;
       }
-    boolean isIrreversible = false;
+    public boolean isIrreversible = false;
     public Line2[] getAxis(){
         Vector2 RX = Matrix2.rotation(this.rotation).transformVector(new Vector2(1,0));
         Vector2 RY = Matrix2.rotation(this.rotation).transformVector(new Vector2(0,1));
@@ -27,8 +27,8 @@ public class PhysicsObject2D extends Object2D{
             this.position.add(RX.scale(-1)).add(RY.scale(-1))
         };
     }
-    double getSignedDistance(Line2 line, Vector2 corner){
-    Vector2 projected = corner.project(line);
+    public double getSignedDistance(Line2 line, Vector2 corner){
+      Vector2 projected = corner.project(line);
       Vector2 CP = projected.sub(this.position);
       boolean sign = (CP.x * line.x) + (CP.y * line.y) > 0;
       return CP.length() * (sign ? 1 : -1);

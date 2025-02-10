@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-class CollisionChecker{
-    static ArrayList<ArrayList<PhysicsObject2D>> collisionGroups = new ArrayList<>(Arrays.asList(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+public class CollisionChecker{
+    public static ArrayList<ArrayList<PhysicsObject2D>> collisionGroups = new ArrayList<>(Arrays.asList(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
     // Checking collisions between two specific instances of PhysicsObject2D
-    static boolean isColliding(PhysicsObject2D rect, PhysicsObject2D onRect){
+    public static boolean isColliding(PhysicsObject2D rect, PhysicsObject2D onRect){
       Vector2[] onRectCorners = onRect.getCorners();
       Vector2[] corners = rect.getCorners();
       ArrayList<Double> onThisAxis1 = new ArrayList<>();
@@ -32,7 +32,7 @@ class CollisionChecker{
       return (isAxis1Colliding && isAxis2Colliding && isAxis3Colliding && isAxis4Colliding);
     }
     // Checking collisions between a specified object and all other objects in a specified collision group
-    static ArrayList<PhysicsObject2D> checkCollisions(int group, PhysicsObject2D onRect){
+    public static ArrayList<PhysicsObject2D> checkCollisions(int group, PhysicsObject2D onRect){
         ArrayList<PhysicsObject2D> collidesWith = new ArrayList<>();
         // The narrow phase of checking collisions
         for(int i = 0; i<CollisionChecker.collisionGroups.get(group).size(); i++){
