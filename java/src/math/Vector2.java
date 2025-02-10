@@ -1,5 +1,5 @@
 package math;
-// import math.Interpolation;
+import math.Interpolation;
 public class Vector2{
     double x = 0;
     double y = 0;
@@ -57,11 +57,11 @@ public class Vector2{
     static double dot(Vector2 a, Vector2 b){
         return a.x * b.x + a.y * b.y;
     }
-    // static Vector2 lerp(double t, Vector2 a, Vector2 b){
-    //     return new Vector2(
-    //         Interpolation.lerp(t, a.x, b.x),
-    //         Interpolation.lerp(t, a.y, b.y));
-    // }
+    static Vector2 lerp(double t, Vector2 a, Vector2 b){
+        return new Vector2(
+            Interpolation.lerp(t, a.x, b.x),
+            Interpolation.lerp(t, a.y, b.y));
+    }
     static Vector2 project(Vector2 a, Vector2 b){
         return b.divide(b.length()).scale(Vector2.dot(a, b));
     }
