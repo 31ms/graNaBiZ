@@ -3,18 +3,22 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-javadoc.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-stb-natives-windows.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-stb.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-opengl-natives-windows.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-glfw.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-opengl-javadoc.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-stb-javadoc.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-glfw-javadoc.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-natives-windows.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-glfw-natives-windows.jar",
-        "d:/kody/js/graNaBiZ/java/libs/lwjgl-opengl.jar"
+        "libs/lwjgl.jar",
+        "libs/lwjgl-glfw.jar",
+        "libs/lwjgl-glfw-javadoc.jar",
+        "libs/lwjgl-glfw-natives-windows.jar",
+        "libs/lwjgl-glfw-sources.jar",
+        "libs/lwjgl-javadoc.jar",
+        "libs/lwjgl-natives-windows.jar",
+        "libs/lwjgl-opengl.jar",
+        "libs/lwjgl-opengl-javadoc.jar",
+        "libs/lwjgl-opengl-natives-windows.jar",
+        "libs/lwjgl-opengl-sources.jar",
+        "libs/lwjgl-sources.jar",
+        "libs/lwjgl-stb.jar",
+        "libs/lwjgl-stb-javadoc.jar",
+        "libs/lwjgl-stb-natives-windows.jar",
+        "libs/lwjgl-stb-sources.jar"
     ],
     "java.project.outputPath": "bin"
 }
