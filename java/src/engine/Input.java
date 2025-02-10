@@ -61,11 +61,11 @@ public class Input {
             // Mouse.justEntered = true; // ODKOMENTUJ JAK BEDZIE MATH
         }
     };
-    public static void setInputCallbacks(Window window){
-        glfwSetKeyCallback(window.id, keyCallback);
-        glfwSetMouseButtonCallback(window.id, mouseCallback);
-        glfwSetCursorPosCallback(window.id, cursorCallback);
-        glfwSetCursorEnterCallback(window.id, enterCallback);
+    public static void setInputCallbacks(long id){
+        glfwSetKeyCallback(id, keyCallback);
+        glfwSetMouseButtonCallback(id, mouseCallback);
+        glfwSetCursorPosCallback(id, cursorCallback);
+        glfwSetCursorEnterCallback(id, enterCallback);
     }
     public static void updateInput(){
         Arrays.fill(Keyboard.down, false);

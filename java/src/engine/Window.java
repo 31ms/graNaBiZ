@@ -10,9 +10,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
-// import static main.Main.main;
-// import main.*;
-
 public class Window {
     
     private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
@@ -46,8 +43,8 @@ public class Window {
     public long id;
     public void Hints(){
         glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     }
@@ -73,17 +70,14 @@ public class Window {
         Hints();
         glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
         id = glfwCreateWindow(width, height, name, NULL, NULL);
-        
-        // glfwSetWindowPos(id, 0, 0);
         mainWindow = this;
     }
     public Window(int w, int h, String name){
         initGLFW();
         width = w;
         height = h;
-        monitor = 0;
         Hints();
-        id = glfwCreateWindow(width, height, name, monitor, NULL);
+        id = glfwCreateWindow(width, height, name, NULL, NULL);
         mainWindow = this;
     }
     // public Window(int w, int h, long mon)
@@ -99,17 +93,23 @@ public class Window {
     public void closeWindow(){
         glfwSetWindowShouldClose(id, true);
     }
+    public boolean shouldClose(){
+        return glfwWindowShouldClose(id);
+    }
+    public void swap(){
+        glfwSwapBuffers(id);
+    }
     public void Destroy(){
         freeCallbacks();
         errorCallback.free();
         sizeCallback.free();
         glfwDestroyWindow(id);
     }
-    public static void setCallbacks(){
-        Input.setInputCallbacks(mainWindow);
-        glfwSetWindowSizeCallback(mainWindow.id, sizeCallback);
+    public void setCallbacks(){
+        Input.setInputCallbacks(id);
+        glfwSetWindowSizeCallback(id, sizeCallback);
     }
-    public static void freeCallbacks(){
+    public void freeCallbacks(){
         Input.freeCallbacks();
     }
 }
