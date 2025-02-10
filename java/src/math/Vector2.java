@@ -1,5 +1,4 @@
 package math;
-import math.Interpolation;
 public class Vector2{
     double x = 0;
     double y = 0;
