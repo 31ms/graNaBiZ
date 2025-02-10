@@ -7,8 +7,8 @@ import java.nio.*;
 import org.lwjgl.BufferUtils;
 
 public class VertexBufferObject {
-    public int id;
-    public int target;
+    private int id;
+    private int target;
     public VertexBufferObject(int target){
         this.target = target;
         id = glGenBuffers();

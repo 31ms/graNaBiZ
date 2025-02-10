@@ -1,4 +1,5 @@
 package engine.graphics;
+import math.*;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
@@ -43,6 +44,12 @@ public class ShaderProgram {
         glUseProgram(id);
 
         Attributes.aPosition = getAttribLocation("aPosition");
+
+        Uniforms.model = getUniformLocation("model");
+        Uniforms.ortho = getUniformLocation("ortho");
+        
+        Uniforms.setMatrix3(Uniforms.model, new Matrix3());
+        Uniforms.setMatrix3(Uniforms.ortho, new Matrix3());
     }
     private static void addShader(String filename, int target){
         int shader = glCreateShader(target);
@@ -57,17 +64,26 @@ public class ShaderProgram {
     private static int getAttribLocation(String name){
         return glGetAttribLocation(id, name);
     }
+    private static int getUniformLocation(String name){
+        return glGetUniformLocation(id, name);
+    }
     public static void defineAttribs(){
         Attributes.defineAttrib(Attributes.aPosition, 2, 0);
-            // this.defineAttrib("aVertexTexCoord", 2, 4, 2)
     }
     public static class Attributes {
-        static int vertexSize = 4;
-        static int aPosition;
-        static int aTextureCoord;
-        static void defineAttrib(int loc, int size, int vertexOffset){
+        public static int vertexSize = 4;
+        public static int aPosition;
+        public static int aTextureCoord;
+        public static void defineAttrib(int loc, int size, int vertexOffset){
             glEnableVertexAttribArray(loc);
             glVertexAttribPointer(loc, size, GL_FLOAT, false, vertexSize*4, vertexOffset*4);
+        }
+    }
+    public static class Uniforms {
+        public static int ortho;
+        public static int model;
+        public static void setMatrix3(int loc, Matrix3 m){
+            glUniformMatrix3fv(loc, false, m.toFloatBuffer());
         }
     }
 }
