@@ -1,5 +1,9 @@
 package math;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class Matrix3{
     public double m00 = 1; double m01 = 0; double m02 = 0;
     public double m10 = 0; double m11 = 1; double m12 = 0;
@@ -69,9 +73,6 @@ public class Matrix3{
         Matrix3 m = new Matrix3();
         return m._m00(xs)._m02(xt)._m11(ys)._m12(yt);
     }
-    public double[] toArray(){
-        return new double[]{this.m00, this.m10, this.m20, this.m01, this.m11, this.m21, this.m02, this.m12, this.m22};
-    }
     @Override
     public String toString() {
         return 
@@ -79,7 +80,13 @@ public class Matrix3{
         this.m10 + this.m11 + this.m12 + "\n" + 
         this.m20 + this.m21 + this.m22;
     }
-    // toFloatArray(){
-    //     return new Float32Array(this.toArray())
-    // }
+    public float[] toArray(){
+        return new float[]{
+            (float)this.m00, (float)this.m10, (float)this.m20,
+            (float)this.m01, (float)this.m11, (float)this.m21,
+            (float)this.m02, (float)this.m12, (float)this.m22};
+    }
+    public FloatBuffer toFloatBuffer(){
+        return BufferUtils.createFloatBuffer(9).put(toArray()).flip();
+    }
 }

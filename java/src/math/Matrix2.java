@@ -1,5 +1,11 @@
 package math;
 
+import static org.lwjgl.opengl.GL20.glGetUniformfv;
+
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class Matrix2{
     public double m00 = 1; double m01 = 0;
     public double m10 = 0; double m11 = 1;
@@ -37,16 +43,16 @@ public class Matrix2{
         m.m10 = s;
         return m;
     }
-    public double[] toArray(){
-        return new double[]{this.m00, this.m10, this.m01, this.m11};
-    }
     @Override
     public String toString() {
         return 
         this.m00 + this.m01 + "\n" +
         this.m10 + this.m11;
     }
-    // toFloatArray(){
-    //     return new Float32Array(this.toArray())
-    // }
+    public float[] toArray(){
+        return new float[]{(float)this.m00, (float)this.m10, (float)this.m01, (float)this.m11};
+    }
+    public FloatBuffer toFloatBuffer(){
+        return BufferUtils.createFloatBuffer(4).put(toArray()).flip();
+    }
 }
