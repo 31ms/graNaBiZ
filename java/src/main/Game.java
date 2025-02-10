@@ -3,6 +3,7 @@ package main;
 import engine.FileReader;
 import engine.Image;
 import engine.Input;
+import engine.Object2D;
 import engine.Timer;
 
 import engine.Window;
@@ -17,13 +18,15 @@ public class Game {
         Renderer.init(window);
         window.setCallbacks();
         Geometry.rect.Bind();
+        // System.out.println(Object2D.scene);
+        Object2D a = new Object2D(Geometry.rect);
         while (!window.shouldClose()){
             Input.updateInput();
-            
+            a.rotation += .1;
             Renderer.clear();
-            Renderer.render();
+            Renderer.render(Object2D.scene);
             window.swap();
-            Timer.sleep(100);
+            Timer.sleep(16);
         };
     }
     public static void main(String[] args){

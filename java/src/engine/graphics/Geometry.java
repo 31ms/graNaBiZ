@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL32.*;
 public class Geometry {
     VertexArrayObject vao;
     VertexBufferObject vbo, ebo;
+    public int count;
     Geometry(float[] vertices, int[] triangles){
         vao = new VertexArrayObject();
         vao.Bind();
@@ -20,6 +21,7 @@ public class Geometry {
         ebo.uploadData(triangles, GL_STATIC_DRAW);
         ShaderProgram.defineAttribs();
         vao.unBind();
+        count = triangles.length;
     }
     public void Bind(){
         vao.Bind();
