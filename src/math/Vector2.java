@@ -6,6 +6,13 @@ public class Vector2{
         this.x = x;
         this.y = y;
     }
+    public Vector2(){
+    }
+    public Vector2 set(double x, double y){
+        this.x = x;
+        this.y = y;
+        return this;
+    }
     public Vector2 copy(){
         return new Vector2(this.x, this.y);
     }

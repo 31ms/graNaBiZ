@@ -18,12 +18,15 @@ public class Renderer {
     public static Window window; 
     public static void init(Window window){
         Renderer.window = window;
-        window.setCallbacks();
+        // Setting input callbacks
+        window.setCallbacks(); 
         window.Bind();
-        createCapabilities();
+        // Initializing OpenGL, enabling depth test and initializing other classes
+        createCapabilities(); 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
         initClasses();
+        // Setting up orthographic matrix and background
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho,
         Matrix3.ortho(-window.width/2, window.width/2, -window.height/2, window.height/2));
         setBackgroundColor(new Vector3(0, .2, .1));
@@ -34,20 +37,24 @@ public class Renderer {
         Geometry.init();
     }
     public static void clear(){
+        // Clears color and depth
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     public static void render(ArrayList<Object2D> scene){
+        // Iterating scene ArrayList and calls object's render method
             for (Object2D object : scene){
                 object.render();
             }
         }
     public static void onWindowSizeChange(int width, int height){
+        // Setting OpenGL's viewport and refreshing ortho matrix
         glViewport(0, 0, width, height);
         float hw = (float)width/2;
         float hh = (float)height/2;
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho, Matrix3.ortho(-hw, hw, -hh, hh));
     }
     public static void setBackgroundColor(Vector3 v){
+        // Setting color of the background
         glClearColor((float)v.x, (float)v.y, (float)v.z, 1);
     }
 }

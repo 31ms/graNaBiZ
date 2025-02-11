@@ -8,7 +8,7 @@ public class Game {
     static Game game;
     Window window;
     public Game(){
-        window = new Window(1000, 1000, "okno");
+        window = new Window(1000, 800, "okno");
         Renderer.init(window);
         PhysicsObject2D a = new PhysicsObject2D(Geometry.rect, 0, false);
         PhysicsObject2D b = new PhysicsObject2D(Geometry.rect, 0, false);
@@ -25,7 +25,7 @@ public class Game {
             background.align();
             background.texture.offset.x += .001;
             a.position = new Vector2(0, 300*Math.sin(c/2));
-            System.out.println(CollisionChecker.checkCollisions(0, a).size());
+            // System.out.println(CollisionChecker.checkCollisions(0, a).size());
             c+=0.4;
             Renderer.clear();
             Renderer.render(Object2D.scene);
