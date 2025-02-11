@@ -1,5 +1,9 @@
 package math;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+
 public class Vector3{
     public double x = 0;
     public double y = 0;
@@ -54,10 +58,10 @@ public class Vector3{
     public static Vector3 fromArray(double[] a){
         return new Vector3(a[0], a[1], a[2]);
     }
-    public double[] toArray(){
-        return new double[]{this.x, this.y, this.z};
+    public float[] toArray(){
+        return new float[]{(float)x, (float)y, (float)z};
     }
-    // toFloatArray(){
-    //     return new Float32Array(this.toArray())
-    // }
+    public FloatBuffer toFloatBuffer(){
+        return BufferUtils.createFloatBuffer(3).put(toArray()).flip();
+    }
 }

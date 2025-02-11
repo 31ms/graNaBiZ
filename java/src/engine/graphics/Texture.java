@@ -1,0 +1,72 @@
+package engine.graphics;
+
+import math.*;
+
+import static org.lwjgl.opengl.GL32.*;
+
+import org.lwjgl.BufferUtils;
+
+public class Texture{
+    public Vector2 offset = new Vector2(0,0);
+    public Vector2 scale = new Vector2(1,1); // skaluje teksture podczas renderowanie
+
+    public Image image;
+
+    private int id;
+
+    public Texture(){
+        id = glGenTextures();
+        Bind();
+        setWrap(Texture.Enums.Wrap.CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        setFilter(Texture.Enums.Filter.NEAREST);
+    }
+    public Texture setWrap(int value){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value);
+        return this;
+    }
+    public Texture setFilter(int value){
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, value);
+        return this;
+    }
+    public Texture uploadImage(Image image){
+        glTexImage2D(GL_TEXTURE_2D,
+            0, GL_RGBA8, image.width, image.height, 0, GL_RGBA,
+           GL_UNSIGNED_BYTE, image.buffer);
+        this.image = image;
+        return this;
+    }
+    public Texture uploadPixels(int width, int height, byte[] p){
+        return uploadImage(new Image(BufferUtils.createByteBuffer(p.length).put(p).flip(), width, height));
+    }
+    public Texture uploadDefaultPixels(){
+        return uploadPixels(2, 2,
+            new byte[]{0, 0, 0, -1,  -1, 0, -1, -1, // mozna po prostu zrobić (byte)0xff
+                -1, 0, -1, -1,  0, 0, 0, -1});
+    } 
+    public void Bind(){
+        var translationM = new Matrix3().setTranslation(this.offset);
+        var scaleM = new Matrix3()._m00(this.scale.x)._m11(this.scale.y);
+        ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.texOffsetMatrix,
+            translationM.multiply(scaleM)
+        );
+        glBindTexture(GL_TEXTURE_2D, id);
+    }
+    public static Texture defaultTexture;
+    public static void init(){
+        defaultTexture = new Texture().uploadDefaultPixels(); 
+    }
+    public static class Enums {
+        public static class Wrap {
+            public static final int CLAMP_TO_EDGE = GL_CLAMP_TO_EDGE;
+            public static final int REPEAT = GL_REPEAT;
+            public static final int MIRRORED_REPEAT = GL_MIRRORED_REPEAT;
+            public static final int CLAMP_TO_BORDER = GL_CLAMP_TO_BORDER;
+        }
+        public static class Filter {
+            public static final int LINEAR = GL_LINEAR;
+            public static final int NEAREST = GL_NEAREST; 
+        }
+    }
+}

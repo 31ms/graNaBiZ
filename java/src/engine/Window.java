@@ -10,6 +10,8 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
+import engine.graphics.Renderer;
+
 public class Window {
     
     private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
@@ -18,7 +20,7 @@ public class Window {
         public void invoke(long window, int width, int height){
             mainWindow.width = width;
             mainWindow.height = height;
-            // TU DAJ FUNKCJE CO MA SIE WYWOLAC PODCZAS ZMIANY OKNA
+            Renderer.onWindowSizeChange(width, height);
         } 
     };
     public static void initGLFW(){

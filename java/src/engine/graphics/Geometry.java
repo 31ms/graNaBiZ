@@ -4,7 +4,6 @@ import engine.graphics.buffers.VertexArrayObject;
 import engine.graphics.buffers.VertexBufferObject;
 
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL32.*;
 public class Geometry {
     VertexArrayObject vao;
     VertexBufferObject vbo, ebo;

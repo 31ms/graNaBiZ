@@ -9,6 +9,8 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import engine.graphics.Image;
+
 import static org.lwjgl.stb.STBImage.stbi_load_from_memory;
 
 public class FileReader {

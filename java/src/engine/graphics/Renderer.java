@@ -19,14 +19,17 @@ public class Renderer {
         Renderer.window = window;
         window.Bind();
         createCapabilities();
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
         ShaderProgram.init();
+        Texture.init();
         Geometry.init();
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho,
         Matrix3.ortho(-window.width/2, window.width/2, -window.height/2, window.height/2));
         glClearColor(0, .2f, .1f, 1);
     }
     public static void clear(){
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
     public static void render(ArrayList<Object2D> scene){
             for (Object2D object : scene){
@@ -36,5 +39,11 @@ public class Renderer {
         }
     public static Window getWindow(){
         return window;
+    }
+    public static void onWindowSizeChange(int width, int height){
+        glViewport(0, 0, width, height);
+        float hw = width/2;
+        float hh = height/2;
+        ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho, Matrix3.ortho(-hw, hw, -hh, hh));
     }
 }

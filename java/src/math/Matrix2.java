@@ -1,7 +1,5 @@
 package math;
 
-import static org.lwjgl.opengl.GL20.glGetUniformfv;
-
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;

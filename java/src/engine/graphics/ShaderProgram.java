@@ -17,12 +17,15 @@ import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
 import static org.lwjgl.opengl.GL20.glGetProgrami;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform3fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix3fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL32.*;
 
 import engine.FileReader;
 public class ShaderProgram {
@@ -44,12 +47,13 @@ public class ShaderProgram {
         glUseProgram(id);
 
         Attributes.aPosition = getAttribLocation("aPosition");
+        Attributes.aTextureCoord = getAttribLocation("aTextureCoord");
 
         Uniforms.model = getUniformLocation("model");
         Uniforms.ortho = getUniformLocation("ortho");
-        
-        Uniforms.setMatrix3(Uniforms.model, new Matrix3());
-        Uniforms.setMatrix3(Uniforms.ortho, new Matrix3());
+        Uniforms.zindex = getUniformLocation("zindex");
+        Uniforms.modelColor = getUniformLocation("modelColor");
+        Uniforms.texOffsetMatrix = getUniformLocation("texOffsetMatrix");
     }
     private static void addShader(String filename, int target){
         int shader = glCreateShader(target);
@@ -69,6 +73,7 @@ public class ShaderProgram {
     }
     public static void defineAttribs(){
         Attributes.defineAttrib(Attributes.aPosition, 2, 0);
+        Attributes.defineAttrib(Attributes.aTextureCoord, 2, 2);
     }
     public static class Attributes {
         public static int vertexSize = 4;
@@ -82,8 +87,17 @@ public class ShaderProgram {
     public static class Uniforms {
         public static int ortho;
         public static int model;
-        public static void setMatrix3(int loc, Matrix3 m){
-            glUniformMatrix3fv(loc, false, m.toFloatBuffer());
+        public static int zindex;
+        public static int modelColor;
+        public static int texOffsetMatrix;
+        public static void setMatrix3(int loc, Matrix3 value){
+            glUniformMatrix3fv(loc, false, value.toFloatBuffer());
+        }
+        public static void setVector3(int loc, Vector3 value){
+            glUniform3fv(loc, value.toFloatBuffer());
+        }
+        public static void setFloat(int loc, float value){
+            glUniform1f(loc, value);
         }
     }
 }

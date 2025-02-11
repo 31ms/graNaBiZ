@@ -4,19 +4,18 @@ import static org.lwjgl.opengl.GL32.*;
 
 import java.util.ArrayList;
 
-import engine.graphics.Geometry;
-import engine.graphics.ShaderProgram;
+import engine.graphics.*;
 import math.*;
 
 public class Object2D {
     public static ArrayList<Object2D> scene = new ArrayList<>();
-    // public float zindex = 0;
+    public float zindex = 0;
     public Vector2 position = new Vector2(0, 0);
     public float rotation = 0;
     public Vector3 color = new Vector3(1,1,1);
     public Vector2 size = new Vector2(1, 1);
     public Geometry geometry;
-    // public texture = null;
+    public Texture texture;
     public Object2D(Geometry geometry){
         this.geometry = geometry;
         Object2D.scene.add(this);
@@ -27,14 +26,13 @@ public class Object2D {
         ._m12(this.position.y);
     }
     public void render(){
-        // if (this.texture != null)
-        //     this.texture.Bind()
-        // else
-        // Texture.defaultTexture.Bind()
+        if (texture != null)
+            texture.Bind();
+        else
+            Texture.defaultTexture.Bind();
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.model, this.getModel());
-        // Renderer.program.setVector3("color", this.color)
-        // Renderer.program.setFloat("zindex", this.zindex)
-        // Renderer.gl.drawElements(Renderer.gl.TRIANGLES, this.geometry.count, Renderer.gl.UNSIGNED_SHORT, 0)
+        ShaderProgram.Uniforms.setVector3(ShaderProgram.Uniforms.modelColor, this.color);
+        ShaderProgram.Uniforms.setFloat(ShaderProgram.Uniforms.zindex, zindex);
         geometry.Bind();
         glDrawElements(GL_TRIANGLES, geometry.count, GL_UNSIGNED_INT, 0);
     }

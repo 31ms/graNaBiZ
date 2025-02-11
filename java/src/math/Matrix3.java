@@ -82,9 +82,9 @@ public class Matrix3{
     }
     public float[] toArray(){
         return new float[]{
-            (float)this.m00, (float)this.m10, (float)this.m20,
-            (float)this.m01, (float)this.m11, (float)this.m21,
-            (float)this.m02, (float)this.m12, (float)this.m22};
+            (float)m00, (float)m10, (float)m20,
+            (float)m01, (float)m11, (float)m21,
+            (float)m02, (float)m12, (float)m22};
     }
     public FloatBuffer toFloatBuffer(){
         return BufferUtils.createFloatBuffer(9).put(toArray()).flip();

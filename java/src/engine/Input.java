@@ -2,8 +2,6 @@ package engine;
 
 import org.lwjgl.glfw.*;
 
-import math.*;
-
 import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.Arrays;
