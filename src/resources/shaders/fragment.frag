@@ -3,7 +3,7 @@
 in vec2 textureCoord;
 
 uniform sampler2D textureImage;
-uniform vec3 modelColor;
+uniform vec4 modelColor;
 uniform mat3 texOffsetMatrix;
 
 out vec4 fragColor;
@@ -16,5 +16,5 @@ void main(){
     // If textureColor.w < 0.001 discaring fragment
     if (textureColor.w < 0.001) discard;
     // Muliplying textureColor and modelColor from Object2D class
-    fragColor = textureColor*vec4(modelColor,1);
+    fragColor = textureColor*modelColor;
 }

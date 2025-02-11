@@ -22,6 +22,7 @@ import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform3fv;
+import static org.lwjgl.opengl.GL20.glUniform4fv;
 import static org.lwjgl.opengl.GL20.glUniformMatrix3fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
@@ -101,6 +102,9 @@ public class ShaderProgram {
         // Setting uniforms value
         public static void setMatrix3(int loc, Matrix3 value){
             glUniformMatrix3fv(loc, false, value.toFloatBuffer());
+        }
+        public static void setVector4(int loc, Vector4 value){
+            glUniform4fv(loc, value.toFloatBuffer());
         }
         public static void setVector3(int loc, Vector3 value){
             glUniform3fv(loc, value.toFloatBuffer());

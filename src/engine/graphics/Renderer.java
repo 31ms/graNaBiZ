@@ -3,16 +3,15 @@ package engine.graphics;
 import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL30.*;
 
-import java.util.ArrayList;
-
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 import engine.Object2D;
+import engine.Scene;
 import engine.Window;
 import math.Matrix3;
-import math.Vector3;
+import math.Vector4;
 
 public class Renderer {
     public static Window window; 
@@ -25,11 +24,13 @@ public class Renderer {
         createCapabilities(); 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         initClasses();
         // Setting up orthographic matrix and background
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho,
         Matrix3.ortho(-window.width/2, window.width/2, -window.height/2, window.height/2));
-        setBackgroundColor(new Vector3(0, .2, .1));
+        setBackgroundColor(new Vector4(0, .2, .1, 1));
     }
     private static void initClasses(){
         ShaderProgram.init();
@@ -40,9 +41,13 @@ public class Renderer {
         // Clears color and depth
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
-    public static void render(ArrayList<Object2D> scene){
+    public static void render(Scene scene){
+        if (scene == null) return;
         // Iterating scene ArrayList and calls object's render method
-            for (Object2D object : scene){
+            for (Object2D object : scene.opaque){
+                object.render();
+            }
+            for (Object2D object : scene.transparent){
                 object.render();
             }
         }
@@ -53,8 +58,8 @@ public class Renderer {
         float hh = (float)height/2;
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.ortho, Matrix3.ortho(-hw, hw, -hh, hh));
     }
-    public static void setBackgroundColor(Vector3 v){
+    public static void setBackgroundColor(Vector4 v){
         // Setting color of the background
-        glClearColor((float)v.x, (float)v.y, (float)v.z, 1);
+        glClearColor((float)v.x, (float)v.y, (float)v.z, (float)v.w);
     }
 }
