@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
 import engine.graphics.Renderer;
+import math.Vector2;
 
 public class Window {
     
@@ -32,6 +33,7 @@ public class Window {
         GLFWVidMode vm = glfwGetVideoMode(primaryMonitor);
         monitorWidth = vm.width();
         monitorHeight = vm.height();
+        glfwDefaultWindowHints();
     }
     public static long primaryMonitor;
     public static int[] getMonitorSize(){ 
@@ -41,48 +43,33 @@ public class Window {
     public static Window mainWindow;
     public int width;
     public int height;
+    public Vector2 getSize(){
+        return new Vector2(width, height);
+    }
     public long monitor;
     public long id;
     public void Hints(){
-        glfwDefaultWindowHints();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
     }
-    // public Window(int w, int h, boolean fullscr, String name){
-    //     if (fullscr){
-    //         int[] size = getMonitorSize();
-    //         width = size[0];
-    //         height = size[1];
-    //         monitor = primaryMonitor;
-    //     } else {
-    //         width = w;
-    //         height = h;
-    //         monitor = 0;
-    //     }
-    //     id = glfwCreateWindow(width, height, name, monitor, NULL);
-    //     mainWindow = this;
-    // }
     public Window(String name){
         initGLFW();
-        int[] size = getMonitorSize();
-        width = size[0];
-        height = size[1];
-        Hints();
         glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-        id = glfwCreateWindow(width, height, name, NULL, NULL);
-        mainWindow = this;
+        create(monitorWidth, monitorHeight, name);;
     }
     public Window(int w, int h, String name){
         initGLFW();
+        create(w, h, name);
+    }
+    private void create(int w, int h, String name){
         width = w;
         height = h;
         Hints();
-        id = glfwCreateWindow(width, height, name, NULL, NULL);
+        id = glfwCreateWindow(w, h, name, NULL, NULL);
         mainWindow = this;
     }
-    // public Window(int w, int h, long mon)
     public void Error(){
         if (id == NULL){
             glfwTerminate();

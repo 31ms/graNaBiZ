@@ -11,7 +11,6 @@ public class Texture{
     public Vector2 scale = new Vector2(1,1); // skaluje teksture podczas renderowanie
 
     public Image image;
-
     private int id;
 
     public Texture(){
@@ -38,13 +37,13 @@ public class Texture{
         return this;
     }
     public Texture uploadPixels(int width, int height, byte[] p){
-        return uploadImage(new Image(BufferUtils.createByteBuffer(p.length).put(p).flip(), width, height));
+        return uploadImage(new Image(p, width, height));
     }
-    public Texture uploadDefaultPixels(){
-        return uploadPixels(2, 2,
-            new byte[]{0, 0, 0, -1,  -1, 0, -1, -1, // mozna po prostu zrobić (byte)0xff
-                -1, 0, -1, -1,  0, 0, 0, -1});
-    } 
+    // public Texture uploadDefaultPixels(){
+    //     return uploadPixels(2, 2,
+    //         new byte[]{0, 0, 0, -1,  -1, 0, -1, -1, // mozna po prostu zrobić (byte)0xff
+    //             -1, 0, -1, -1,  0, 0, 0, -1});
+    // } 
     public void Bind(){
         var translationM = new Matrix3().setTranslation(this.offset);
         var scaleM = new Matrix3()._m00(this.scale.x)._m11(this.scale.y);
@@ -55,7 +54,7 @@ public class Texture{
     }
     public static Texture defaultTexture;
     public static void init(){
-        defaultTexture = new Texture().uploadDefaultPixels(); 
+        defaultTexture = new Texture().uploadImage(Image.defaultImage); 
     }
     public static class Enums {
         public static class Wrap {
