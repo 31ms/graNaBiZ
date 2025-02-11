@@ -4,8 +4,6 @@ import math.*;
 
 import static org.lwjgl.opengl.GL32.*;
 
-import org.lwjgl.BufferUtils;
-
 public class Texture{
     public Vector2 offset = new Vector2(0,0);
     public Vector2 scale = new Vector2(1,1); // skaluje teksture podczas renderowanie
