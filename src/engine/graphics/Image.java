@@ -13,8 +13,10 @@ public class Image {
         this.height = height;
     }
     public Image(byte[] buffer, int width, int height){
+        // Creating buffer from array and calling other constructor
         this(BufferUtils.createByteBuffer(buffer.length).put(buffer).flip(), width, height);
     }
+    // Setting default image
     public static final Image defaultImage = new Image(new byte[]{0, 0, 0, -1,  -1, 0, -1, -1,
         -1, 0, -1, -1,  0, 0, 0, -1}, 2, 2);
 }

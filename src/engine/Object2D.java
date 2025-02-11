@@ -2,23 +2,30 @@ package engine;
 
 import static org.lwjgl.opengl.GL32.*;
 
-import java.util.ArrayList;
-
 import engine.graphics.*;
 import math.*;
 
 public class Object2D {
-    public static ArrayList<Object2D> scene = new ArrayList<>();
+    public static Scene scene = null;
+    public static void setScene(Scene scene){
+        Object2D.scene = scene;
+    }
+    public final boolean transparent;
     public float zindex = 0;
     public Vector2 position = new Vector2(0, 0);
     public float rotation = 0;
-    public Vector3 color = new Vector3(1,1,1);
-    public Vector2 size = new Vector2(1, 1);
+    public Vector4 color = new Vector4(1,1,1,1);
+    public Vector2 size = new Vector2(100, 100);
     public Geometry geometry;
     public Texture texture;
-    public Object2D(Geometry geometry){
+    public Object2D(Geometry geometry, boolean transparent){
+        this.transparent = transparent;
         this.geometry = geometry;
-        Object2D.scene.add(this);
+        if (scene != null)
+            scene.add(this);
+    }
+    public Object2D(Geometry geometry){
+        this(geometry, false);
     }
     public Matrix3 getModel(){
         return Matrix3.rotation(this.rotation).multiply(new Matrix3()._m00(size.x)._m11(size.y))
@@ -31,12 +38,9 @@ public class Object2D {
         else
             Texture.defaultTexture.Bind();
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.model, this.getModel());
-        ShaderProgram.Uniforms.setVector3(ShaderProgram.Uniforms.modelColor, this.color);
+        ShaderProgram.Uniforms.setVector4(ShaderProgram.Uniforms.modelColor, this.color);
         ShaderProgram.Uniforms.setFloat(ShaderProgram.Uniforms.zindex, zindex);
         geometry.Bind();
         glDrawElements(GL_TRIANGLES, geometry.count, GL_UNSIGNED_INT, 0);
-    }
-    public void remove(){
-        scene.remove(this);
     }
 }

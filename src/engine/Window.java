@@ -90,8 +90,6 @@ public class Window {
     }
     public void Destroy(){
         freeCallbacks();
-        errorCallback.free();
-        sizeCallback.free();
         glfwDestroyWindow(id);
     }
     public void setCallbacks(){
@@ -100,5 +98,7 @@ public class Window {
     }
     public void freeCallbacks(){
         Input.freeCallbacks();
+        errorCallback.free();
+        sizeCallback.free();
     }
 }

@@ -6,14 +6,16 @@ import static org.lwjgl.opengl.GL32.*;
 
 public class Texture{
     public Vector2 offset = new Vector2(0,0);
-    public Vector2 scale = new Vector2(1,1); // skaluje teksture podczas renderowanie
+    public Vector2 scale = new Vector2(1,1);
 
     public Image image;
     private int id;
 
     public Texture(){
+        // Creating texture
         id = glGenTextures();
         Bind();
+        // Setting wrapping and filtering
         setWrap(Texture.Enums.Wrap.CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         setFilter(Texture.Enums.Filter.NEAREST);
@@ -28,6 +30,7 @@ public class Texture{
         return this;
     }
     public Texture uploadImage(Image image){
+        // Uploading buffer with pixels from image to texture
         glTexImage2D(GL_TEXTURE_2D,
             0, GL_RGBA8, image.width, image.height, 0, GL_RGBA,
            GL_UNSIGNED_BYTE, image.buffer);
@@ -35,14 +38,11 @@ public class Texture{
         return this;
     }
     public Texture uploadPixels(int width, int height, byte[] p){
+        // Creates image object from arguments and calls method
         return uploadImage(new Image(p, width, height));
     }
-    // public Texture uploadDefaultPixels(){
-    //     return uploadPixels(2, 2,
-    //         new byte[]{0, 0, 0, -1,  -1, 0, -1, -1, // mozna po prostu zrobić (byte)0xff
-    //             -1, 0, -1, -1,  0, 0, 0, -1});
-    // } 
     public void Bind(){
+        // Uploading transform matrix to ShaderProgram and binding texture
         var translationM = new Matrix3().setTranslation(this.offset);
         var scaleM = new Matrix3()._m00(this.scale.x)._m11(this.scale.y);
         ShaderProgram.Uniforms.setMatrix3(ShaderProgram.Uniforms.texOffsetMatrix,
@@ -52,6 +52,7 @@ public class Texture{
     }
     public static Texture defaultTexture;
     public static void init(){
+        // Creating default texture
         defaultTexture = new Texture().uploadImage(Image.defaultImage); 
     }
     public static class Enums {

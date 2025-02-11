@@ -6,8 +6,10 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.Arrays;
 
+import math.Vector2;
+
 public class Input {
-    public static GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
+    static GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
         @Override
         public void invoke(long window,int key, int scancode, int action, int mods){
             // System.out.println(key + "  " + action);
@@ -23,7 +25,7 @@ public class Input {
             }
         }
     };
-    public static GLFWMouseButtonCallback mouseCallback = new GLFWMouseButtonCallback() {
+    static GLFWMouseButtonCallback mouseCallback = new GLFWMouseButtonCallback() {
         @Override
         public void invoke(long window, int button, int action, int mods) {
             // GLFW_MOUSE_BUTTON_1
@@ -38,28 +40,26 @@ public class Input {
             }
         }
     };
-    // public static Vector2f Mouse = new Vector2f();
-    // public static Vector2f mouseLast = new Vector2f();
-    public static GLFWCursorPosCallback cursorCallback = new GLFWCursorPosCallback() {
+    static GLFWCursorPosCallback cursorCallback = new GLFWCursorPosCallback() {
         @Override
         public void invoke(long window, double xpos, double ypos){
-            // Mouse.lastPosition = Mouse.position.copy();  // ODKOMENTUJ JAK BEDZIE MATH
-            // Mouse.position.set((float)xpos, (float)ypos);
-            // Mouse.movement = Mouse.position.subtract(Mouse.lastPosition);
-            // if (Mouse.justEntered){
-            //     Mouse.movement.set(0, 0);
-            //     Mouse.justEntered = false;
-            // }
+            Mouse.lastPosition = Mouse.position.copy();
+            Mouse.position.set((float)xpos, (float)ypos);
+            Mouse.movement = Mouse.position.sub(Mouse.lastPosition);
+            if (Mouse.justEntered){
+                Mouse.movement.set(0, 0);
+                Mouse.justEntered = false;
+            }
         }
     };
     
-    public static GLFWCursorEnterCallback enterCallback = new GLFWCursorEnterCallback() {
+    static GLFWCursorEnterCallback enterCallback = new GLFWCursorEnterCallback() {
         @Override
         public void invoke(long window, boolean enter){
-            // Mouse.justEntered = true; // ODKOMENTUJ JAK BEDZIE MATH
+            Mouse.justEntered = true;
         }
     };
-    public static void setInputCallbacks(long id){
+    static void setInputCallbacks(long id){
         glfwSetKeyCallback(id, keyCallback);
         glfwSetMouseButtonCallback(id, mouseCallback);
         glfwSetCursorPosCallback(id, cursorCallback);
@@ -70,7 +70,7 @@ public class Input {
         Arrays.fill(Keyboard.up, false);
         Arrays.fill(Mouse.down, false);
         Arrays.fill(Mouse.up, false);
-        // Mouse.movement.set(0, 0); // ODKOMENTUJ JAK BEDZIE MATH
+        Mouse.movement.set(0, 0);
         glfwPollEvents();
     }
     public static void freeCallbacks(){
@@ -79,27 +79,17 @@ public class Input {
         cursorCallback.free();
         enterCallback.free();
     }
-    
-    // public static boolean getMouseDown(int key){
-    //     return mouseDown[key];
-    // }
-    // public static boolean getMouseUp(int key){
-    //     return Keyboard.up[key];
-    // }
-    // public static boolean getMouse(int key){
-    //     return Keyboard.hold[key];
-    // }
     public static class Mouse {
-        // private static Vector2f position = new Vector2f();
-        // private static Vector2f lastPosition = new Vector2f(); // ODKOMENTUJ JAK BEDZIE MATH
-        // private static Vector2f movement = new Vector2f();
-        // private static boolean justEntered = false;
-        // public static Vector2f getPosition(){
-        //     return position.copy();
-        // }
-        // public static Vector2f getMovement(){
-        //     return movement.copy();
-        // }
+        private static Vector2 position = new Vector2();
+        private static Vector2 lastPosition = new Vector2();
+        private static Vector2 movement = new Vector2();
+        private static boolean justEntered = false;
+        public static Vector2 getPosition(){
+            return position.copy();
+        }
+        public static Vector2 getMovement(){
+            return movement.copy();
+        }
         private static boolean[] hold = new boolean[8];
         private static boolean[] down = new boolean[8];
         private static boolean[] up = new boolean[8];
