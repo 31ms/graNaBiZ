@@ -23,7 +23,7 @@ public class Game {
         Background background = new Background();
         background.texture.uploadImage(testImage);
         Object2D transparent = new Object2D(Geometry.rect, true);
-        transparent.texture = new Texture().uploadPixels(1, 1, new byte[]{-1, -1, -1, -1});
+        transparent.texture = Texture.whiteTexture;
         transparent.color = new Vector4(1, 0, 0, .5);
         while (!window.shouldClose()){
             Input.updateInput();
@@ -36,6 +36,8 @@ public class Game {
             Renderer.render(Object2D.scene);
             window.swap();
             Timer.sleep(16);
+            Timer.Update();
+            System.out.println(Timer.delta);
         };
     }
     public static void main(String[] args){

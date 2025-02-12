@@ -18,7 +18,7 @@ public class Texture{
         // Setting wrapping and filtering
         setWrap(Texture.Enums.Wrap.CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        setFilter(Texture.Enums.Filter.NEAREST);
+        setFilter(Texture.Enums.Filter.LINEAR);
     }
     public Texture setWrap(int value){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value);
@@ -51,9 +51,11 @@ public class Texture{
         glBindTexture(GL_TEXTURE_2D, id);
     }
     public static Texture defaultTexture;
+    public static Texture whiteTexture;
     public static void init(){
-        // Creating default texture
-        defaultTexture = new Texture().uploadImage(Image.defaultImage); 
+        // Creating default and white texture
+        defaultTexture = new Texture().uploadImage(Image.defaultImage).setFilter(Texture.Enums.Filter.NEAREST); 
+        whiteTexture = new Texture().uploadImage(Image.whiteImage);
     }
     public static class Enums {
         public static class Wrap {

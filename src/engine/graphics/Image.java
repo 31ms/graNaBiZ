@@ -19,4 +19,5 @@ public class Image {
     // Setting default image
     public static final Image defaultImage = new Image(new byte[]{0, 0, 0, -1,  -1, 0, -1, -1,
         -1, 0, -1, -1,  0, 0, 0, -1}, 2, 2);
+    public static final Image whiteImage = new Image(new byte[]{-1, -1, -1, -1}, 1, 1);
 }

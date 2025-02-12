@@ -2,9 +2,9 @@ package engine;
 import static org.lwjgl.glfw.GLFW.*;
 public class Timer {
     public static double timeCount;
-    public static int fpsCount;
+    private static int fpsCount;
     public static int fps;
-    public static int upsCount;
+    private static int upsCount;
     public static int ups;
     private static double lastLoopTime;
     public static double delta;
